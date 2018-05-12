@@ -299,8 +299,8 @@ int main() {
     printf("there\n");
     int block = 0;
     while (1) {
-        unsigned long start = block*16 + 500;
-        unsigned long end = (block + 1)*16 + 500;
+        unsigned long start = block*32 + 2760727302517 - 10;
+        unsigned long end = (block + 1)*32 + 2760727302517 - 10;;
 
         #pragma omp parallel for num_threads(8)
         for (unsigned long i = start; i < end; i++) {
@@ -317,7 +317,7 @@ int main() {
 
             sprintf(str, "%ld", 3);
             mpz_set_str(state[t].head.collatz_index, str, 10);
-            mpz_set_ui(state[t].periodic_q__repetitions, 50);
+            mpz_set_ui(state[t].periodic_q__repetitions, 500);
             mpz_set_ui(state[t].head.prime_index, 1);
 
             printf("Periodic: %ld = %d\n", i, periodic_q(t));
