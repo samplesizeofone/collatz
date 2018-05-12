@@ -168,7 +168,6 @@ void find_next_collatz_prime(int t) {
         // mpz_out_str(stdout, 10, state[t].collatz_difference);
         // printf(" N\n");
         i++;
-        // printf("%d ii\n", i);
     } while(!collatz_prime_q(t));
 }
 
@@ -270,58 +269,55 @@ int main() {
         init_prime_pointer(i, &state[i].head);
     }
 
-    mpz_set_ui(state[0].calc_collatz_digits__start, 10);
-    calc_collatz_digits(0, 0);
-    printf("%s\n", state[0].calc_collatz_digits__digits);
+    // mpz_set_ui(state[0].calc_collatz_digits__start, 10);
+    // calc_collatz_digits(0, 0);
+    // printf("%s\n", state[0].calc_collatz_digits__digits);
 
-    parse_collatz_digits(0);
-    mpz_out_str(stdout, 10, state[0].collatz_number);
-    printf(" C(10)\n");
+    // parse_collatz_digits(0);
+    // mpz_out_str(stdout, 10, state[0].collatz_number);
+    // printf(" C(10)\n");
 
-    mpz_set_ui(state[0].calc_collatz_digits__start, 10);
-    calc_collatz_difference(0);
-    mpz_out_str(stdout, 10, state[0].collatz_difference);
-    printf(" C(10) - C(9)\n");
+    // mpz_set_ui(state[0].calc_collatz_digits__start, 10);
+    // calc_collatz_difference(0);
+    // mpz_out_str(stdout, 10, state[0].collatz_difference);
+    // printf(" C(10) - C(9)\n");
 
-    mpz_set_ui(state[0].collatz_prime_q__max, 1000);
+    // mpz_set_ui(state[0].collatz_prime_q__max, 1000);
 
-    mpz_set_ui(state[0].find_next_collatz_prime__collatz_number_index, 2);
-    for (int i = 0; i < 3; i++) {
-        find_next_collatz_prime(0);
-        mpz_out_str(stdout, 10, state[0].find_next_collatz_prime__collatz_number_index);
-        printf(" next\n");
+    // mpz_set_ui(state[0].find_next_collatz_prime__collatz_number_index, 2);
+    // for (int i = 0; i < 3; i++) {
+    //     find_next_collatz_prime(0);
+    //     mpz_out_str(stdout, 10, state[0].find_next_collatz_prime__collatz_number_index);
+    //     printf(" next\n");
 
-        mpz_set(state[0].calc_collatz_digits__start, state[0].find_next_collatz_prime__collatz_number_index);
-        calc_collatz_difference(0);
-        mpz_out_str(stdout, 10, state[0].collatz_difference);
-        printf(" CN2\n");
-    }
+    //     mpz_set(state[0].calc_collatz_digits__start, state[0].find_next_collatz_prime__collatz_number_index);
+    //     calc_collatz_difference(0);
+    //     mpz_out_str(stdout, 10, state[0].collatz_difference);
+    //     printf(" CN2\n");
+    // }
 
     printf("there\n");
-    char str[1000]; 
     int block = 0;
     while (1) {
-        unsigned long start = block*16 + 1000000000000000;
-        unsigned long end = (block + 1)*16 + 1000000000000000;
+        unsigned long start = block*16 + 100;
+        unsigned long end = (block + 1)*16 + 100;
 
-        #pragma omp parallel for num_threads(4)
+        // #pragma omp parallel for num_threads(4)
         for (unsigned long i = start; i < end; i++) {
-            int t = omp_get_thread_num();
+            char str[100000];
+            int t = 0;//omp_get_thread_num();
 
             printf("Starting %ld\n", i);
 
             clear_prime_pointer(t, &state[t].periodic_q__current_head);
             clear_prime_pointer(t, &state[t].periodic_q__current_index);
 
-            sprintf(str, "%ld", i);
+            sprintf(str, "%ld", 2);
             mpz_set_str(state[t].head.collatz_index, str, 10);
-            mpz_set_ui(state[t].periodic_q__repetitions, 50);
-
-            sprintf(str, "%ld", 1000000000000000);
-            mpz_set_str(state[t].head.collatz_index, str, 10);
+            mpz_set_ui(state[t].periodic_q__repetitions, 10);
             mpz_set_ui(state[t].head.prime_index, 1);
 
-            printf("Periodic: %d = %d\n", i, periodic_q(t));
+            printf("Periodic: %ld = %d\n", i, periodic_q(t));
         }
         block++;
     }
