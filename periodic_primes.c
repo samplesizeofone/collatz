@@ -7,7 +7,7 @@
 
 #include "aks.c"
 
-const int number_of_threads = 4;
+const int number_of_threads = 8;
 const int number_of_digits = 1000000;
 
 mpz_t gmp_0;
@@ -299,22 +299,25 @@ int main() {
     printf("there\n");
     int block = 0;
     while (1) {
-        unsigned long start = block*16 + 100;
-        unsigned long end = (block + 1)*16 + 100;
+        unsigned long start = block*16 + 500;
+        unsigned long end = (block + 1)*16 + 500;
 
-        // #pragma omp parallel for num_threads(4)
+        #pragma omp parallel for num_threads(8)
         for (unsigned long i = start; i < end; i++) {
             char str[100000];
-            int t = 0;//omp_get_thread_num();
+            int t = omp_get_thread_num();
 
             printf("Starting %ld\n", i);
 
             clear_prime_pointer(t, &state[t].periodic_q__current_head);
             clear_prime_pointer(t, &state[t].periodic_q__current_index);
 
-            sprintf(str, "%ld", 2);
+            sprintf(str, "%ld", i);
+            mpz_set_str(state[t].collatz_prime_q__max, str, 10);
+
+            sprintf(str, "%ld", 3);
             mpz_set_str(state[t].head.collatz_index, str, 10);
-            mpz_set_ui(state[t].periodic_q__repetitions, 10);
+            mpz_set_ui(state[t].periodic_q__repetitions, 50);
             mpz_set_ui(state[t].head.prime_index, 1);
 
             printf("Periodic: %ld = %d\n", i, periodic_q(t));
